@@ -26,42 +26,34 @@ while True:
                 try:
                     prices[curr].append(indeksy_tabela.find(id='aq_^'+curr+'_'+idc).text)
                 except AttributeError:
-                    prices[curr].append("N/A")
+                    prices[curr].append("nan")
             else: 
                 try:
                     percents[curr].append(indeksy_tabela.find(id='aq_^'+curr+'_'+idc).text)
                 except AttributeError:
-                    percents[curr].append("N/A")
+                    percents[curr].append("nan")
 
     #for key,value in prices.items():
         #print(value)
-    time.sleep(5)
+    time.sleep(0.1)
 
-    if len(prices) == 15: 
+    if len(prices) == 2 and len(percents) ==2:
         break
-    elif len(percents) ==15: 
-        break 
+print(prices)
 
 style.use('fivethirtyeight')
 
 fig = plt.figure()
 ax1 = fig.add_subplot(1,1,1)
 
-def animation(i):
-
-    xs= []
-    ys= []
-
-    for key,value in prices.items():
-        ys.append(float(" ".join(value)))
-
-    for _ in ys: 
-        x = 1
-        xs.append(x)
-        x+=1
+def charts(i):
 
     ax1.clear()
-    ax1.plot(xs,ys)
 
-ani = animation.FuncAnimation(fig, animation, interval=1000)
+    for key,value in prices.items():
+        series = list(map(float,value))
+        ax1.plot(range(len(series)), series)
+        
+
+ani = animation.FuncAnimation(fig, charts, interval=1000)
 plt.show()
